@@ -45,7 +45,7 @@ void DrawCircle(SDL_Renderer *Renderer, int32_t _x, int32_t _y, int32_t radius)
 
 const int winWidth = 800;
 const int winHeight = 600;
-const char* title = "Fourier Spinners! - 2nd Prototype";
+const char* title = "Fourier Spinners! - 3nd Prototype";
 
 SDL_Window* disp;
 SDL_Renderer* renderer;

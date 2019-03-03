@@ -11,8 +11,10 @@
 
 Chain* Fourier::createDFT(Point2D* signal, int N, int K){
 	printf("Reading signal of len %d, creating samples %d\n", N, K);
-	Chain chains[2] = new Chain[2](K, Spinner(0,0));
-	for(int c = 0; c < 2; c++){
+	Chain *chains[2] = {new Chain(K, Spinner(0, 0)),
+						new Chain(K, Spinner(0, 0))
+	};
+	for(int c = 0; c < 2; c++){// do both horizontal & vertical components.
 		for(int k=0; k<K; k++){
 			double re = 0; // the real portion of the Fourier transform
 			double im = 0; // the imaginary portion """
@@ -30,12 +32,12 @@ Chain* Fourier::createDFT(Point2D* signal, int N, int K){
 			double freq = k;
 			printf("[%d/%d] <||> (rho:%f, theta:%f, freq:%f)\n", k, (K-1), amp, phase, freq);
 			Spinner s = Spinner(amp, phase, freq);
-			chains[c].spinners[k] = s;
+			chains[c]->spinners[k] = s;
 			printf("spinner properties: (%f, %f, %f)\n",
-					chains[c].spinners[k].rho,
-					chains[c].spinners[k].theta,
-					chains[c].spinners[k].freq);
+					chains[c]->spinners[k].rho,
+					chains[c]->spinners[k].theta,
+					chains[c]->spinners[k].freq);
 		}
 	}
-	return chains;
+	return *chains;
 }
