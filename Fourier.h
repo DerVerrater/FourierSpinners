@@ -16,7 +16,7 @@
 // don't actually need to create a class
 class Fourier {
 public:
-	static Chain* createDFT(Point2D* signal, int length, int samples);
+	static Chain** createDFT(Point2D* signal, int length, int samples);
 };
 
 #endif /* FOURIER_H_ */

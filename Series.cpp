@@ -103,37 +103,26 @@ int main(){
 	CircularBuffer traceBuffer = CircularBuffer(1000); // points drawn by the epicycles
 	CircularBuffer drawing = CircularBuffer(1000); // points drawn by the user
 
-
 	#define DFT_DEPTH 50  // the number of epicycles the discrete Fourier transform will produce
-	// CREATE vertiChain INPUT SIGNAL
+	Chain* chains;
+
+	// CREATE INPUT SIGNALS
 	int sigLen = 100;
 	Point2D sig[sigLen] = {};
-	printf("Created Point2D array\n");
 	for(int i = 0; i < sigLen; i++){
 		sig[i] = {(double)(i + 100.0), (double)i};
 	}
-	Chain vertiChain = *Fourier::createDFT(sig, sigLen, DFT_DEPTH);
-
-	// CREATE horizChain INPUT SIGNAL
-	int sig2Len = 250;
-	Point2D sig2[sig2Len];
-	for(int i = 0; i < sig2Len/2; i++){
-		sig2[i] = {i, 200.0};
-	}
-	for(int i = sig2Len/2; i < sig2Len; i++){
-		sig2[i] = {i, 100.0};
-	}
-	Chain horizChain =  *Fourier::createDFT(sig2, sig2Len, DFT_DEPTH);// Chain(horizLength, Spinner::fromCartesian(winWidth/2, winHeight/4));
-	for(int i = 0; i < horizChain.chainLength; i++){
-		horizChain.spinners[i].theta -= M_PI/2;
-	}
-
+	printf("Performing transform...\n");
+	chains = Fourier::createDFT(sig, sigLen, DFT_DEPTH);
+	Chain horizChain = chains[0];
+	Chain vertiChain = chains[1];
+	printf("Created chain aliases\n");
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
 	vertiChain.anchor = Spinner::fromCartesian(winWidth/2, 0);
 	horizChain.anchor = Spinner::fromCartesian(0, winHeight/2);
-
+	printf("Anchors set. Starting main loop!\n");
 	bool isDrawing = false;
 	while(running){
 		while(SDL_PollEvent(&e)){
@@ -149,15 +138,13 @@ int main(){
 					running = false;
 				case SDLK_SPACE:
 					// USE DRAWN LINE AS PATH FOR DFT
-					vertiChain = *Fourier::createDFT(drawing.data, drawing.size, DFT_DEPTH);
-					Point2D swaps[drawing.size]; // swap x & y positions.
-					for(int i = 0; i < drawing.size; i++){
-						swaps[i] = {drawing.data[i].y, drawing.data[i].x};
-					}
-					horizChain = *Fourier::createDFT(swaps, drawing.size, DFT_DEPTH);
+					Chain* chains = Fourier::createDFT(drawing.data, drawing.size, DFT_DEPTH);
+					horizChain = chains[0];
+					//TODO: Move rotation to Fourier.cpp (as it should be part of the generator anyway)
 					for(int i = 0; i < horizChain.chainLength; i++){
 							horizChain.spinners[i].theta -= M_PI/2;
 					}
+					vertiChain = chains[1];
 					break;
 				};
 			case SDL_MOUSEBUTTONDOWN:
@@ -196,11 +183,11 @@ int main(){
 
 		Spinner offset = Spinner(0, 0); // start offset at origin (uses Spinner because the operators are overloaded for convenience)
 		Point2D tracePoint; // the convergence of each set of spinners. This is where the next dot will be drawn
-
 		offset = vertiChain.anchor; // move draw point to that of the anchor
 		for(int i = 0; i < vertiChain.chainLength; i++){
 			//draw spinner circles
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+			printf("POINT!\n");
 			DrawCircle(renderer, offset.getX(), offset.getY(), vertiChain.spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
@@ -215,6 +202,7 @@ int main(){
 		tracePoint.y = offset.getY();
 
 		offset = horizChain.anchor;
+
 		for(int i = 0; i < horizChain.chainLength; i++){
 			//draw spinner circles
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
@@ -229,6 +217,7 @@ int main(){
 			);
 			offset = offset+horizChain.spinners[i];
 		}
+
 		tracePoint.x = offset.getX(); // add x-component to the new point
 		traceBuffer.push(tracePoint); // push the point into the ring buffer
 
