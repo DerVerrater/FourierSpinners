@@ -103,25 +103,25 @@ int main(){
 	CircularBuffer traceBuffer = CircularBuffer(1000); // points drawn by the epicycles
 	CircularBuffer drawing = CircularBuffer(1000); // points drawn by the user
 
-	#define DFT_DEPTH 50  // the number of epicycles the discrete Fourier transform will produce
-	Chain* chains;
-
+	#define DFT_DEPTH 5  // the number of epicycles the discrete Fourier transform will produce
+	printf("creating chains\n");
+	Chain chains[2] = {
+			Chain(DFT_DEPTH, Spinner(0, 0, 0)),
+			Chain(DFT_DEPTH, Spinner(0, 0, 0))
+	};
 	// CREATE INPUT SIGNALS
 	int sigLen = 100;
 	Point2D sig[sigLen] = {};
 	for(int i = 0; i < sigLen; i++){
-		sig[i] = {(double)(i + 100.0), (double)i};
+		sig[i] = {(100)*sin(i/(2*M_PI)), (100)*cos(i/(2*M_PI))};
 	}
 	printf("Performing transform...\n");
-	chains = Fourier::createDFT(sig, sigLen, DFT_DEPTH);
-	Chain horizChain = chains[0];
-	Chain vertiChain = chains[1];
-	printf("Created chain aliases\n");
+	Fourier::createDFT(chains, sig, sigLen, DFT_DEPTH);
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
-	vertiChain.anchor = Spinner::fromCartesian(winWidth/2, 0);
-	horizChain.anchor = Spinner::fromCartesian(0, winHeight/2);
+	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 50);
+	chains[1].anchor = Spinner::fromCartesian(50, winHeight/2);
 	printf("Anchors set. Starting main loop!\n");
 	bool isDrawing = false;
 	while(running){
@@ -136,17 +136,13 @@ int main(){
 				case SDLK_ESCAPE:
 				case SDLK_q:
 					running = false;
+					break;
 				case SDLK_SPACE:
 					// USE DRAWN LINE AS PATH FOR DFT
-					Chain* chains = Fourier::createDFT(drawing.data, drawing.size, DFT_DEPTH);
-					horizChain = chains[0];
-					//TODO: Move rotation to Fourier.cpp (as it should be part of the generator anyway)
-					for(int i = 0; i < horizChain.chainLength; i++){
-							horizChain.spinners[i].theta -= M_PI/2;
-					}
-					vertiChain = chains[1];
+					Fourier::createDFT(chains, drawing.data, drawing.size, DFT_DEPTH);
 					break;
 				};
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				if(e.button.button == SDL_BUTTON_LEFT){
 					printf("Mouse down\n");
@@ -183,39 +179,49 @@ int main(){
 
 		Spinner offset = Spinner(0, 0); // start offset at origin (uses Spinner because the operators are overloaded for convenience)
 		Point2D tracePoint; // the convergence of each set of spinners. This is where the next dot will be drawn
-		offset = vertiChain.anchor; // move draw point to that of the anchor
-		for(int i = 0; i < vertiChain.chainLength; i++){
-			//draw spinner circles
+		offset = chains[1].anchor; // move draw point to that of the anchor
+//		printf("====BEGINNING VERTICHAIN DRAWING LOOP====\n");
+		for(int i = 0; i < chains[1].chainLength; i++){
+//			printf("vertiChain spinner %d/%d", i, chains[1].chainLength-1);
+			//draw spinner circles]
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-			printf("POINT!\n");
-			DrawCircle(renderer, offset.getX(), offset.getY(), vertiChain.spinners[i].rho);
+//			printf("	(%f, %f, %f) \n",
+//					chains[1].spinners[i].rho,
+//					chains[1].spinners[i].theta,
+//					chains[1].spinners[i].freq
+//				);
+//			printf("	addr: %d\n", &chains[1].spinners[i]);
+//			printf("Drawing circle...\n");
+			DrawCircle(renderer, offset.getX(), offset.getY(), chains[1].spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+//			printf("Drawing line...\n");
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
-					(int)(offset.getX() + vertiChain.spinners[i].getX()),
-					(int)(offset.getY() + vertiChain.spinners[i].getY())
+					(int)(offset.getX() + chains[1].spinners[i].getX()),
+					(int)(offset.getY() + chains[1].spinners[i].getY())
 			);
-			offset = offset+vertiChain.spinners[i];
+			offset = offset+chains[1].spinners[i];
+//			printf("offset incremented. Looping over!\n");
 		}
 		tracePoint.y = offset.getY();
 
-		offset = horizChain.anchor;
+		offset = chains[0].anchor;
 
-		for(int i = 0; i < horizChain.chainLength; i++){
+		for(int i = 0; i < chains[0].chainLength; i++){
 			//draw spinner circles
-			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-			DrawCircle(renderer, offset.getX(), offset.getY(), horizChain.spinners[i].rho);
+			SDL_SetRenderDrawColor(renderer, 0x65, 0x00, 0x65, 0xFF);
+			DrawCircle(renderer, offset.getX(), offset.getY(), chains[0].spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+			SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
-					(int)(offset.getX() + horizChain.spinners[i].getX()),
-					(int)(offset.getY() + horizChain.spinners[i].getY())
+					(int)(offset.getX() + chains[0].spinners[i].getX()),
+					(int)(offset.getY() + chains[0].spinners[i].getY())
 			);
-			offset = offset+horizChain.spinners[i];
+			offset = offset+chains[0].spinners[i];
 		}
 
 		tracePoint.x = offset.getX(); // add x-component to the new point
@@ -257,11 +263,11 @@ int main(){
 		SDL_RenderPresent(renderer);
 
 		// move the things for the next cycle
-		for(int i = 0; i < vertiChain.chainLength; i++){
-			vertiChain.spinners[i].theta += vertiChain.spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
+		for(int i = 0; i < chains[1].chainLength; i++){
+			chains[1].spinners[i].theta += chains[1].spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
 		}
-		for(int i = 0; i < horizChain.chainLength; i++){
-			horizChain.spinners[i].theta += horizChain.spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
+		for(int i = 0; i < chains[0].chainLength; i++){
+			chains[0].spinners[i].theta += chains[0].spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
 		}
 		SDL_Delay(16);
 	}

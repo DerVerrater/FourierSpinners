@@ -9,12 +9,8 @@
 #include <cmath>
 #include <stdio.h>
 
-Chain** Fourier::createDFT(Point2D* signal, int N, int K){
+bool Fourier::createDFT(Chain* chains, Point2D* signal, int N, int K){
 	printf("Reading signal of len %d, creating samples %d\n", N, K);
-	Chain* chains[] = new Chain[2]{
-		new Chain(K, Spinner(0, 0, 0)),
-		new Chain(K, Spinner(0, 0, 0))
-	};
 
 	for(int k=0; k<K; k++){
 		double reHori = 0; // the real portion of the Fourier transform
@@ -38,23 +34,28 @@ Chain** Fourier::createDFT(Point2D* signal, int N, int K){
 		imHori = imHori/N;
 		reVert = reVert/N;
 		imVert = imVert/N;
-		double ampH = sqrt(reHori*reHori + reHori*reHori);
+		double ampH = sqrt(pow(reHori, 2) + pow(imHori, 2));
 		double phaseH = atan2(reHori, reHori);
 		double freqH = k;
-		double ampV = sqrt(imVert*reHori + imVert*reHori);
-		double phaseV = atan2(imVert, reHori);
+		double ampV = sqrt(pow(reVert, 2) + pow(imVert, 2));
+		double phaseV = atan2(reVert, imVert);
 		double freqV = k;
-//		printf("[%d/%d] <||> (rho:%f, theta:%f, freq:%f)\n", k, (K-1), ampH, phaseH, freqH);
-		Spinner* sV = new Spinner(ampV, phaseV, freqV);
-		Spinner* sH = new Spinner(ampH, phaseH, freqH);
+//		printf("[%d/%d] =>rho:	theta:	freq:\n	Gen'd (%f, %f, %f)\n", k, (K-1), ampV, phaseV, freqV);
 
-		chains[0]->spinners[k] = *sH;
-		chains[1]->spinners[k] = *sV;
-//		printf("spinner properties: (%f, %f, %f)\n",
-//				chains[c]->spinners[k].rho,
-//				chains[c]->spinners[k].theta,
-//				chains[c]->spinners[k].freq);
+		// reassign values
+		chains[0].spinners[k].freq = freqH;
+		chains[0].spinners[k].theta = phaseH;
+		chains[0].spinners[k].rho = ampH;
+		chains[1].spinners[k].freq = freqV;
+		chains[1].spinners[k].theta = phaseV;
+		chains[1].spinners[k].rho = ampV;
+
+//		printf("	Sav'd (%f, %f, %f)\n",
+//				chains[1].spinners[k].rho,
+//				chains[1].spinners[k].theta,
+//				chains[1].spinners[k].freq);
+//		printf("	addr: %d\n", &chains[1].spinners[k]);
 	}
-	printf("Transform complete. Returning...\n");
-	return chains;
+//	printf("Transform complete. Returning...\n");
+	return true;
 }

@@ -28,24 +28,31 @@ Chain::Chain(Spinner* spinners, int chainlength, Spinner anchor) {
 	this->anchor = anchor;
 }
 
-Chain::Chain(Chain const& copy){
-	spinners = copy.spinners;
-	chainLength = copy.chainLength;
-	anchor = copy.anchor;
-}
+// VVV UNTESTED STUFF FOR COPYING OBJECTS AROUND VVV
+// 		this existed for an incomplete solution that would allow
+// 		the Fourier.cpp's DFT function to return a pointer to
+// 		a pair of Chain objects put on the heap.
+// 		Problems with shallow copying the Chain's caused segfaults.
 
-Chain& Chain::operator=(Chain rhs){
-	rhs.swap(*this);
-	return *this;
-}
-
-void Chain::swap(Chain& s) noexcept{
-	this->spinners = s.spinners;
-}
+//Chain::Chain(Chain const& copy){
+//	spinners = copy.spinners;
+//	chainLength = copy.chainLength;
+//	anchor = copy.anchor;
+//}
+//
+//Chain& Chain::operator=(Chain rhs){
+//	rhs.swap(*this);
+//	return *this;
+//}
+//
+//void Chain::swap(Chain& s) noexcept{
+//	this->spinners = s.spinners;
+//}
 
 
 Chain::~Chain() {
-	// TODO Auto-generated destructor stub
-	delete this->spinners;
+	//TODO SOLVE DOUBLE-FREE ERROR
+	// VVV results in double-free memory corruption. WTF?
+//	delete this->spinners;
 }
 
