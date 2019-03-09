@@ -189,13 +189,6 @@ int main(){
 //			printf("vertiChain spinner %d/%d", i, chains[1].chainLength-1);
 			//draw spinner circles]
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-//			printf("	(%f, %f, %f) \n",
-//					chains[1].spinners[i].rho,
-//					chains[1].spinners[i].theta,
-//					chains[1].spinners[i].freq
-//				);
-//			printf("	addr: %d\n", &chains[1].spinners[i]);
-//			printf("Drawing circle...\n");
 			DrawCircle(renderer, offset.getX(), offset.getY(), chains[1].spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
