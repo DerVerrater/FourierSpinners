@@ -103,7 +103,7 @@ int main(){
 	CircularBuffer traceBuffer = CircularBuffer(1000); // points drawn by the epicycles
 	CircularBuffer drawing = CircularBuffer(1000); // points drawn by the user
 
-	#define DFT_DEPTH 5  // the number of epicycles the discrete Fourier transform will produce
+	#define DFT_DEPTH 50  // the number of epicycles the discrete Fourier transform will produce
 	printf("creating chains\n");
 	Chain chains[2] = {
 			Chain(DFT_DEPTH, Spinner(0, 0, 0)),
@@ -113,7 +113,11 @@ int main(){
 	int sigLen = 100;
 	Point2D sig[sigLen] = {};
 	for(int i = 0; i < sigLen; i++){
-		sig[i] = {(100)*sin(i/(2*M_PI)), (100)*cos(i/(2*M_PI))};
+		double theta = (2*M_PI)*(double)i/100;
+		double x = -(100)*theta + 300;
+		double y = (100)*sin(theta);
+		sig[i] = { x, y };
+		printf("input signal: (%f, %f)\n", x, y);
 	}
 	printf("Performing transform...\n");
 	Fourier::createDFT(chains, sig, sigLen, DFT_DEPTH);

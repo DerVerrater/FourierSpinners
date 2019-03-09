@@ -23,8 +23,8 @@ bool Fourier::createDFT(Chain* chains, Point2D* signal, int N, int K){
 			double phi = (2*M_PI * k * n) / N;
 			// TODO: Find nicer way of picking Point2D variable (array-like offsets? Magic with pointers?)
 			// horizontal spinners
-			reHori += signal[n].x * cos(phi);
-			imHori -= signal[n].x * sin(phi);
+			reHori += signal[n].x * sin(phi);
+			imHori -= signal[n].x * cos(phi);
 			 // vertical spinners
 			reVert += signal[n].y * cos(phi);
 			imVert -= signal[n].y * sin(phi);
@@ -35,7 +35,7 @@ bool Fourier::createDFT(Chain* chains, Point2D* signal, int N, int K){
 		reVert = reVert/N;
 		imVert = imVert/N;
 		double ampH = sqrt(pow(reHori, 2) + pow(imHori, 2));
-		double phaseH = atan2(reHori, reHori);
+		double phaseH = atan2(reHori, imHori);
 		double freqH = k;
 		double ampV = sqrt(pow(reVert, 2) + pow(imVert, 2));
 		double phaseV = atan2(reVert, imVert);
