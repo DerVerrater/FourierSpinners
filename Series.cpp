@@ -226,12 +226,15 @@ int main(){
 
 		//RENDER TRACE POINTS
 		//TODO: consider using splines for particularly sparse areas
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+		char blue = 255;
+		char notBlue = 0;
+		SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
 		Point2D p2;
 		Point2D prev = traceBuffer.pop();
 		for(int i = 1; i < traceBuffer.size; i++){
 			p2 = traceBuffer.pop();
 			if(!(p2.x < 0 || p2.y < 0 || prev.x < 0 || prev.y < 0)){
+				SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
 				SDL_RenderDrawLine(renderer,
 						(int)prev.x,
 						(int)prev.y,
@@ -239,6 +242,7 @@ int main(){
 						(int)p2.y);
 			}
 			prev = p2;
+			notBlue++;
 		}
 
 
