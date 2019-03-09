@@ -45,7 +45,7 @@ void DrawCircle(SDL_Renderer *Renderer, int32_t _x, int32_t _y, int32_t radius)
 
 const int winWidth = 800;
 const int winHeight = 600;
-const char* title = "Fourier Spinners! - 3nd Prototype";
+const char* title = "Fourier Spinners! - 4th Prototype";
 
 SDL_Window* disp;
 SDL_Renderer* renderer;
@@ -93,7 +93,7 @@ void close(){
 	SDL_Quit();
 }
 
-int main(){
+int main(int argc, char* argv[]){
 	if(!init()){
 		printf("A fatal init error has occurred");
 		return -1;
@@ -124,8 +124,8 @@ int main(){
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
-	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 50);
-	chains[1].anchor = Spinner::fromCartesian(50, winHeight/2);
+	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 0);
+	chains[1].anchor = Spinner::fromCartesian(0, winHeight/2);
 	printf("Anchors set. Starting main loop!\n");
 	bool isDrawing = false;
 	while(running){
@@ -183,16 +183,14 @@ int main(){
 
 		Spinner offset = Spinner(0, 0); // start offset at origin (uses Spinner because the operators are overloaded for convenience)
 		Point2D tracePoint; // the convergence of each set of spinners. This is where the next dot will be drawn
+		Point2D antiTracePoint; // the vertical & horizontal position for the start of each intersection arms -- like the tracePoint, but holds the opposite variable: instead keeps y-val from horizChain, and x-val from vertiChain
 		offset = chains[1].anchor; // move draw point to that of the anchor
-//		printf("====BEGINNING VERTICHAIN DRAWING LOOP====\n");
 		for(int i = 0; i < chains[1].chainLength; i++){
-//			printf("vertiChain spinner %d/%d", i, chains[1].chainLength-1);
 			//draw spinner circles]
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 			DrawCircle(renderer, offset.getX(), offset.getY(), chains[1].spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-//			printf("Drawing line...\n");
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
@@ -200,18 +198,17 @@ int main(){
 					(int)(offset.getY() + chains[1].spinners[i].getY())
 			);
 			offset = offset+chains[1].spinners[i];
-//			printf("offset incremented. Looping over!\n");
 		}
 		tracePoint.y = offset.getY();
-
+		antiTracePoint.x = offset.getX();
 		offset = chains[0].anchor;
 
 		for(int i = 0; i < chains[0].chainLength; i++){
 			//draw spinner circles
-			SDL_SetRenderDrawColor(renderer, 0x65, 0x00, 0x65, 0xFF);
+			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 			DrawCircle(renderer, offset.getX(), offset.getY(), chains[0].spinners[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
-			SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
@@ -220,13 +217,13 @@ int main(){
 			);
 			offset = offset+chains[0].spinners[i];
 		}
-
+		antiTracePoint.y = offset.getY();
 		tracePoint.x = offset.getX(); // add x-component to the new point
 		traceBuffer.push(tracePoint); // push the point into the ring buffer
 
 		//RENDER TRACE POINTS
 		//TODO: consider using splines for particularly sparse areas
-		char blue = 255;
+		char blue = 0;
 		char notBlue = 0;
 		SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
 		Point2D p2;
@@ -242,8 +239,13 @@ int main(){
 						(int)p2.y);
 			}
 			prev = p2;
-			notBlue++;
+			notBlue = 1024*i/traceBuffer.size;
 		}
+
+		// RENDER INTERSECTION ARMS
+		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
+		SDL_RenderDrawLine(renderer, (int)tracePoint.x, (int)antiTracePoint.y, (int)tracePoint.x, (int)tracePoint.y);
+		SDL_RenderDrawLine(renderer, (int)antiTracePoint.x, (int)tracePoint.y, (int)tracePoint.x, (int)tracePoint.y);
 
 
 		// RENDER USER DRAWING
