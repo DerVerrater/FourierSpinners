@@ -103,19 +103,19 @@ int main(int argc, char* argv[]){
 	CircularBuffer traceBuffer = CircularBuffer(1000); // points drawn by the epicycles
 	CircularBuffer drawing = CircularBuffer(1000); // points drawn by the user
 
-	#define DFT_DEPTH 50  // the number of epicycles the discrete Fourier transform will produce
+	#define DFT_DEPTH 1000 // the number of epicycles the discrete Fourier transform will produce
 	printf("creating chains\n");
 	Chain chains[2] = {
 			Chain(DFT_DEPTH, Spinner(0, 0, 0)),
 			Chain(DFT_DEPTH, Spinner(0, 0, 0))
 	};
 	// CREATE INPUT SIGNALS
-	int sigLen = 100;
+	int sigLen = 1000;
 	Point2D sig[sigLen] = {};
 	for(int i = 0; i < sigLen; i++){
-		double theta = (2*M_PI)*(double)i/100;
-		double x = -(100)*theta + 300;
-		double y = (100)*sin(theta);
+//		double theta = (2*M_PI)*(double)i/sigLen;
+		double x = i/10;
+		double y = i/10;
 		sig[i] = { x, y };
 		printf("input signal: (%f, %f)\n", x, y);
 	}
@@ -124,8 +124,8 @@ int main(int argc, char* argv[]){
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
-	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 0);
-	chains[1].anchor = Spinner::fromCartesian(0, winHeight/2);
+	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 100);
+	chains[1].anchor = Spinner::fromCartesian(100, winHeight/2);
 	printf("Anchors set. Starting main loop!\n");
 	bool isDrawing = false;
 	while(running){
@@ -267,10 +267,10 @@ int main(int argc, char* argv[]){
 
 		// move the things for the next cycle
 		for(int i = 0; i < chains[1].chainLength; i++){
-			chains[1].spinners[i].theta += chains[1].spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
+			chains[1].spinners[i].theta +=  chains[1].spinners[i].freq * 2*M_PI / sigLen;
 		}
 		for(int i = 0; i < chains[0].chainLength; i++){
-			chains[0].spinners[i].theta += chains[0].spinners[i].freq * 0.1 * (M_PI/DFT_DEPTH);
+			chains[0].spinners[i].theta +=  chains[0].spinners[i].freq * 2*M_PI / sigLen;
 		}
 		SDL_Delay(16);
 	}
