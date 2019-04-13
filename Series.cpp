@@ -45,7 +45,7 @@ void DrawCircle(SDL_Renderer *Renderer, int32_t _x, int32_t _y, int32_t radius)
 
 const int winWidth = 800;
 const int winHeight = 600;
-const char* title = "Fourier Spinners! - 4th Prototype";
+const char* title = "Fourier Spinners! - 5th Prototype";
 
 SDL_Window* disp;
 SDL_Renderer* renderer;
@@ -61,6 +61,7 @@ bool init(){
 	// vvv disables the X11 window-manager compositing.
 	// No compositing = no extra GPU work = better performance
 	// (but also weird things switching in and out of window focus)
+
 #ifdef BYPASS_WM_COMP
 	SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
 #endif
@@ -82,15 +83,29 @@ bool init(){
 	return true;
 }
 
-//gracefully release all system resources before exiting. (Especially important for SDL_Surfaces on the GPU)
+// gracefully release all system resources before exiting.
+// (Especially important for SDL_Textures on the GPU)
 void close(){
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(disp);
+	printf("Freeing wave surface...\n");
 	SDL_FreeSurface(waveCanvas);
+	printf("Freed!\n");
+
+	printf("Destroying renderer...\n");
+	SDL_DestroyRenderer(renderer);
+	printf("Destroyed!\n");
+
+	printf("Destroying window...\n");
+	SDL_DestroyWindow(disp);
+	printf("Destroyed!\n");
+
+	printf("setting handles to NULL...");
 	renderer = NULL;
 	disp = NULL;
 	waveCanvas = NULL;
+	printf("NULL'd!\n");
+	printf("Quitting SDL...\n");
 	SDL_Quit();
+	printf("DONE!\n");
 }
 
 int main(int argc, char* argv[]){
@@ -113,11 +128,11 @@ int main(int argc, char* argv[]){
 	int sigLen = 1000;
 	Point2D sig[sigLen] = {};
 	for(int i = 0; i < sigLen; i++){
-//		double theta = (2*M_PI)*(double)i/sigLen;
-		double x = i/10;
-		double y = i/10;
+		double theta = (2*M_PI)*(double)i/sigLen;
+		double x = 100*(theta - M_PI);
+		double y = 100*sin(theta);
 		sig[i] = { x, y };
-		printf("input signal: (%f, %f)\n", x, y);
+//		printf("input signal: (%f, %f)\n", x, y);
 	}
 	printf("Performing transform...\n");
 	Fourier::createDFT(chains, sig, sigLen, DFT_DEPTH);
@@ -222,7 +237,7 @@ int main(int argc, char* argv[]){
 		traceBuffer.push(tracePoint); // push the point into the ring buffer
 
 		//RENDER TRACE POINTS
-		//TODO: consider using splines for particularly sparse areas
+		//TODO: consider using (sp)lines for particularly sparse areas
 		char blue = 0;
 		char notBlue = 0;
 		SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
