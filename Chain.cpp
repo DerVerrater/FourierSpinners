@@ -53,6 +53,6 @@ Chain::Chain(Spinner* spinners, int chainlength, Spinner anchor) {
 Chain::~Chain() {
 	//TODO SOLVE DOUBLE-FREE ERROR
 	// VVV results in double-free memory corruption. WTF?
-//	delete this->spinners;
+	this->spinners = nullptr;
 }
 

@@ -12,6 +12,8 @@
 #include "Helpers.h"
 
 //TODO: Use template to make this a generic ring-buffer.
+// I'm sorry I didn't just use a std::vector with some rollover mechanism.
+// please forgive me :c
 class CircularBuffer {
 public:
 	int size; // capacity of buffer

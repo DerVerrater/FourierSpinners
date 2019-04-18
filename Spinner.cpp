@@ -17,7 +17,6 @@ Spinner::Spinner(double rho, double theta, double freq) {
 
 Spinner::~Spinner(){
 	//do nothing
-	//Delete doubles?
 }
 
 Spinner Spinner::fromCartesian(double x, double y){

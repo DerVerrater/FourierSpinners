@@ -164,10 +164,10 @@ int main(int argc, char* argv[]){
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				if(e.button.button == SDL_BUTTON_LEFT){
-					printf("Mouse down\n");
-					printf("Was Drawing? %d\n", isDrawing);
+//					printf("Mouse down\n");
+//					printf("Was Drawing? %d\n", isDrawing);
 					isDrawing = isDrawing ? false : true;
-					printf("Now Drawing? %d\n", isDrawing);
+//					printf("Now Drawing? %d\n", isDrawing);
 				}else if(e.button.button == SDL_BUTTON_RIGHT){
 					SDL_WarpMouseInWindow(disp, drawing.peek().x, drawing.peek().y);
 				}
@@ -182,7 +182,7 @@ int main(int argc, char* argv[]){
 					Point2D p;
 					p.x = e.button.x;
 					p.y = e.button.y;
-					printf("tracePoint: %d, %d\n", (int)p.x, (int)p.y);
+//					printf("tracePoint: %d, %d\n", (int)p.x, (int)p.y);
 					drawing.push(p);
 				}
 				break;

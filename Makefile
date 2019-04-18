@@ -4,7 +4,7 @@ OBJS = Spinner.cpp Series.cpp CircularBuffer.cpp Fourier.cpp Chain.cpp
 
 CC=g++
 
-CFLAGS = -w -lSDL2
+CFLAGS = -w -lSDL2 -O2
 LFLAGS = `sdl2-config --cflags --libs`
 
 all: $(OBJS)
