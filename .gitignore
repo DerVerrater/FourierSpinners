@@ -1,2 +1,5 @@
 SDL_src/**
 /build/
+Series
+.project
+.cproject
