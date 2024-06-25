@@ -9,7 +9,7 @@
 #include <cmath>
 #include <stdio.h>
 
-bool Fourier::createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
+bool createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
 	printf("Reading signal of len %d, creating samples %d\n", sigLength, numSamples);
 
 	for(int k=0; k<numSamples; k++){

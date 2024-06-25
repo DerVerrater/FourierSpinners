@@ -135,7 +135,7 @@ int main(int argc, char* argv[]){
 //		printf("input signal: (%f, %f)\n", x, y);
 	}
 	printf("Performing transform...\n");
-	Fourier::createDFT(chains, sig, sigLen, DFT_DEPTH);
+	createDFT(chains, sig, sigLen, DFT_DEPTH);
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
@@ -158,7 +158,7 @@ int main(int argc, char* argv[]){
 					break;
 				case SDLK_SPACE:
 					// USE DRAWN LINE AS PATH FOR DFT
-					Fourier::createDFT(chains, drawing.data, drawing.size, DFT_DEPTH);
+					createDFT(chains, drawing.data, drawing.size, DFT_DEPTH);
 					break;
 				};
 				break;
