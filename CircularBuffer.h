@@ -20,10 +20,9 @@ public:
 	int pos;  // current position in buffer
 	Point2D* data; // pointer to data in buffer
 	CircularBuffer(int size);
-	virtual ~CircularBuffer();
 	Point2D pop();
-	Point2D peek(); // return newest value without moving pos
-	void push(Point2D& inp);
+	const Point2D& peek(); // return newest value without moving pos
+	void push(Point2D inp);
 };
 
 #endif /* CIRCULARBUFFER_H_ */

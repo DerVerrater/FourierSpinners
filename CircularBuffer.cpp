@@ -14,10 +14,6 @@ CircularBuffer::CircularBuffer(int size) {
 	data = new Point2D[size];
 }
 
-CircularBuffer::~CircularBuffer() {
-	// TODO Auto-generated destructor stub
-}
-
 Point2D CircularBuffer::pop(){
 	--pos; // current pos is *next* available, so decrement first.
 	if(pos <= 0){
@@ -28,11 +24,11 @@ Point2D CircularBuffer::pop(){
 	return p;
 }
 
-Point2D CircularBuffer::peek(){
+const Point2D& CircularBuffer::peek(){
 	return data[pos-1];
 }
 
-void CircularBuffer::push(Point2D& inp){
+void CircularBuffer::push(Point2D inp){
 	data[pos++] = inp; // current pos is in bounds
 		// and advance to next available
 	if(pos > size){ // if new pos is out of bounds, then fix
