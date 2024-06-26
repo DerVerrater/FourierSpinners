@@ -17,7 +17,7 @@ CircularBuffer::CircularBuffer(int size) {
 Point2D CircularBuffer::pop(){
 	--idx; // current pos is *next* available, so decrement first.
 	if(idx <= 0){
-		idx = capacity;
+		idx = capacity-1;
 //		printf("Circular buffer rollunder!\n");
 	}
 	Point2D p = point_buffer[idx];
