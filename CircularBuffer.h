@@ -15,14 +15,16 @@
 // I'm sorry I didn't just use a std::vector with some rollover mechanism.
 // please forgive me :c
 class CircularBuffer {
+	int capacity; // capacity of buffer
+	int idx;  // current position in buffer
+	Point2D* point_buffer; // pointer to data in buffer
 public:
-	int size; // capacity of buffer
-	int pos;  // current position in buffer
-	Point2D* data; // pointer to data in buffer
 	CircularBuffer(int size);
 	Point2D pop();
 	const Point2D& peek(); // return newest value without moving pos
 	void push(Point2D inp);
+	Point2D* const data() const;
+	const int size() const;
 };
 
 #endif /* CIRCULARBUFFER_H_ */

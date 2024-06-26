@@ -158,7 +158,7 @@ int main(int argc, char* argv[]){
 					break;
 				case SDLK_SPACE:
 					// USE DRAWN LINE AS PATH FOR DFT
-					createDFT(chains, drawing.data, drawing.size, DFT_DEPTH);
+					createDFT(chains, drawing.data(), drawing.size(), DFT_DEPTH);
 					break;
 				};
 				break;
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]){
 		SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
 		Point2D p2;
 		Point2D prev = traceBuffer.pop();
-		for(int i = 1; i < traceBuffer.size; i++){
+		for(int i = 1; i < traceBuffer.size(); i++){
 			p2 = traceBuffer.pop();
 			if(!(p2.x < 0 || p2.y < 0 || prev.x < 0 || prev.y < 0)){
 				SDL_SetRenderDrawColor(renderer, notBlue, notBlue, blue, 0xFF);
@@ -254,7 +254,7 @@ int main(int argc, char* argv[]){
 						(int)p2.y);
 			}
 			prev = p2;
-			notBlue = 1024*i/traceBuffer.size;
+			notBlue = 1024*i/traceBuffer.size();
 		}
 
 		// RENDER INTERSECTION ARMS
@@ -266,7 +266,7 @@ int main(int argc, char* argv[]){
 		// RENDER USER DRAWING
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 		prev = drawing.pop();
-		for(int i = 1; i < drawing.size; i++){
+		for(int i = 1; i < drawing.size(); i++){
 			p2 = drawing.pop();
 			if(!(p2.x < 0 || p2.y < 0 || prev.x < 0 || prev.y < 0)){
 				SDL_RenderDrawLine(renderer,
