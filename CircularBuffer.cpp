@@ -11,7 +11,7 @@
 CircularBuffer::CircularBuffer(int size) {
 	this->capacity = size;
 	this->idx = 0; // the next available space to write into
-	this->point_buffer = new Point2D[size];
+	this->point_buffer.reserve(size);
 }
 
 Point2D CircularBuffer::pop(){
@@ -37,8 +37,8 @@ void CircularBuffer::push(Point2D inp){
 	} // roll over to min
 }
 
-Point2D* const CircularBuffer::data() const {
-	return this->point_buffer;
+Point2D* const CircularBuffer::data() {
+	return this->point_buffer.data();
 }
 
 const int CircularBuffer::size() const {

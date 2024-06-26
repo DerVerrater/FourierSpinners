@@ -10,20 +10,19 @@
 
 #include "Spinner.h"
 #include "Helpers.h"
+#include <vector>
 
 //TODO: Use template to make this a generic ring-buffer.
-// I'm sorry I didn't just use a std::vector with some rollover mechanism.
-// please forgive me :c
 class CircularBuffer {
 	int capacity; // capacity of buffer
 	int idx;  // current position in buffer
-	Point2D* point_buffer; // pointer to data in buffer
+	std::vector<Point2D> point_buffer; // data in buffer
 public:
 	CircularBuffer(int size);
 	Point2D pop();
 	const Point2D& peek(); // return newest value without moving pos
 	void push(Point2D inp);
-	Point2D* const data() const;
+	Point2D* const data();
 	const int size() const;
 };
 
