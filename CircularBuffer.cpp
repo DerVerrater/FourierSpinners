@@ -37,7 +37,11 @@ void CircularBuffer::push(Point2D inp){
 	} // roll over to min
 }
 
-Point2D* const CircularBuffer::data() {
+const Point2D* const CircularBuffer::data_mut() {
+	return this->point_buffer.data();
+}
+
+const Point2D* const CircularBuffer::data() const {
 	return this->point_buffer.data();
 }
 

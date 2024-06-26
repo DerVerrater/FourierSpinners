@@ -22,7 +22,8 @@ public:
 	Point2D pop();
 	const Point2D& peek(); // return newest value without moving pos
 	void push(Point2D inp);
-	Point2D* const data();
+	const Point2D* const data_mut();
+	const Point2D* const data() const;
 	const int size() const;
 };
 
