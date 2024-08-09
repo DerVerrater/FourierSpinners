@@ -41,6 +41,10 @@ const Point2D* const CircularBuffer::data_mut() {
 	return this->point_buffer.data();
 }
 
+const std::vector<Point2D> CircularBuffer::data_vec() const {
+	return this->point_buffer;
+}
+
 const Point2D* const CircularBuffer::data() const {
 	return this->point_buffer.data();
 }

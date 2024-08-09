@@ -23,6 +23,7 @@ public:
 	const Point2D& peek(); // return newest value without moving pos
 	void push(Point2D inp);
 	const Point2D* const data_mut();
+	const std::vector<Point2D> data_vec() const;
 	const Point2D* const data() const;
 	const int size() const;
 };
