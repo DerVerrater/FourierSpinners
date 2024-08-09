@@ -14,11 +14,6 @@ Chain::Chain(int chainlength, Spinner anchor){
 	this->anchor = anchor;
 }
 
-Chain::Chain(Spinner* spinners, int chainlength, Spinner anchor) {
-	this->spinners = spinners;
-	this->chainLength = chainlength;
-	this->anchor = anchor;
-}
 int Chain::chain_length() const {
 	return this->chainLength;
 }
