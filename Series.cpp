@@ -154,7 +154,7 @@ int main(int argc, char* argv[]){
 					break;
 				case SDLK_SPACE:
 					// USE DRAWN LINE AS PATH FOR DFT
-					createDFT(chains, drawing.data_mut(), drawing.size(), DFT_DEPTH);
+					chains = createDFT(drawing.data_vec(), DFT_DEPTH);
 					break;
 				};
 				break;
