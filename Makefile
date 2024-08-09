@@ -2,7 +2,7 @@ EXE = Series
 SRCS = Spinner.cpp Series.cpp CircularBuffer.cpp Fourier.cpp Chain.cpp
 OPTIMIZATION_LEVEL = "-O2"
 
-CXXFLAGS += $(shell sdl2-config --cflags) $(OPTIMIZATION_LEVEL)
+CXXFLAGS += $(shell sdl2-config --cflags) $(OPTIMIZATION_LEVEL) -std=c++17
 LDFLAGS += $(shell sdl2-config --libs)
 
 .PHONY: all clean install
