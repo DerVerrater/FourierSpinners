@@ -15,21 +15,21 @@ Spinner Spinner::fromCartesian(double x, double y){
 	return Spinner{rho, theta, 1};
 }
 
-Spinner Spinner::operator +(const Spinner& inp){
+const Spinner Spinner::operator +(const Spinner& inp) const {
 	// ugly to look at and read, but better than explicitly declaring 6 doubles (compiler optimization, or whatever)
 	double x = (cos(inp.theta)*inp.rho)+(cos(this->theta)*this->rho);
 	double y = (sin(inp.theta)*inp.rho)+(sin(this->theta)*this->rho);
-	return Spinner(sqrt(pow(x, 2) + pow(y, 2)), atan2(y, x));
+	return Spinner{sqrt(pow(x, 2) + pow(y, 2)), atan2(y, x)};
 }
 
-Spinner Spinner::operator -(const Spinner& inp){
+const Spinner Spinner::operator -(const Spinner& inp) const {
 	double x = (cos(inp.theta)*inp.rho)-(cos(this->theta)*this->rho);
 	double y = (sin(inp.theta)*inp.rho)-(sin(this->theta)*this->rho);
-	return Spinner(sqrt(pow(x, 2) + pow(y, 2)), atan2(y, x));
+	return Spinner{sqrt(pow(x, 2) + pow(y, 2)), atan2(y, x)};
 }
 
-double Spinner::getX(){ return cos(this->theta) * this->rho; }
-double Spinner::getY(){ return sin(this->theta) * this->rho; }
+const double Spinner::getX() const { return cos(this->theta) * this->rho; }
+const double Spinner::getY() const { return sin(this->theta) * this->rho; }
 
 /*	// The following is a verbose version of the addition & subtraction operators
 	double x1 = cos(inp.theta)*inp.rho;
