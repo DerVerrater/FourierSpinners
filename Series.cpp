@@ -139,8 +139,8 @@ int main(int argc, char* argv[]){
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
-	chains[0].anchor = Spinner::fromCartesian(winWidth/2, 100);
-	chains[1].anchor = Spinner::fromCartesian(100, winHeight/2);
+	chains[0].anchor_mut() = Spinner::fromCartesian(winWidth/2, 100);
+	chains[1].anchor_mut() = Spinner::fromCartesian(100, winHeight/2);
 	printf("Anchors set. Starting main loop!\n");
 	bool isDrawing = false;
 	while(running){
@@ -199,38 +199,38 @@ int main(int argc, char* argv[]){
 		Spinner offset = Spinner {0, 0}; // start offset at origin (uses Spinner because the operators are overloaded for convenience)
 		Point2D tracePoint; // the convergence of each set of spinners. This is where the next dot will be drawn
 		Point2D antiTracePoint; // the vertical & horizontal position for the start of each intersection arms -- like the tracePoint, but holds the opposite variable: instead keeps y-val from horizChain, and x-val from vertiChain
-		offset = chains[1].anchor; // move draw point to that of the anchor
-		for(int i = 0; i < chains[1].chainLength; i++){
+		offset = chains[1].anchor_ref(); // move draw point to that of the anchor
+		for(int i = 0; i < chains[1].chain_length(); i++){
 			//draw spinner circles]
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-			DrawCircle(renderer, offset.getX(), offset.getY(), chains[1].spinners[i].rho);
+			DrawCircle(renderer, offset.getX(), offset.getY(), chains[1].spinners_ptr()[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
-					(int)(offset.getX() + chains[1].spinners[i].getX()),
-					(int)(offset.getY() + chains[1].spinners[i].getY())
+					(int)(offset.getX() + chains[1].spinners_ptr()[i].getX()),
+					(int)(offset.getY() + chains[1].spinners_ptr()[i].getY())
 			);
-			offset = offset+chains[1].spinners[i];
+			offset = offset+chains[1].spinners_ptr()[i];
 		}
 		tracePoint.y = offset.getY();
 		antiTracePoint.x = offset.getX();
-		offset = chains[0].anchor;
+		offset = chains[0].anchor_ref();
 
-		for(int i = 0; i < chains[0].chainLength; i++){
+		for(int i = 0; i < chains[0].chain_length(); i++){
 			//draw spinner circles
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-			DrawCircle(renderer, offset.getX(), offset.getY(), chains[0].spinners[i].rho);
+			DrawCircle(renderer, offset.getX(), offset.getY(), chains[0].spinners_ptr()[i].rho);
 			// draw spinner vector lines (relative to previous vector -- relative to the "offset" spinner)
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 			SDL_RenderDrawLine(renderer,
 					(int)(offset.getX()),
 					(int)(offset.getY()),
-					(int)(offset.getX() + chains[0].spinners[i].getX()),
-					(int)(offset.getY() + chains[0].spinners[i].getY())
+					(int)(offset.getX() + chains[0].spinners_ptr()[i].getX()),
+					(int)(offset.getY() + chains[0].spinners_ptr()[i].getY())
 			);
-			offset = offset+chains[0].spinners[i];
+			offset = offset+chains[0].spinners_ptr()[i];
 		}
 		antiTracePoint.y = offset.getY();
 		tracePoint.x = offset.getX(); // add x-component to the new point
@@ -281,11 +281,11 @@ int main(int argc, char* argv[]){
 		SDL_RenderPresent(renderer);
 
 		// move the things for the next cycle
-		for(int i = 0; i < chains[1].chainLength; i++){
-			chains[1].spinners[i].theta +=  chains[1].spinners[i].freq * 2*M_PI / sigLen;
+		for(int i = 0; i < chains[1].chain_length(); i++){
+			chains[1].spinners_mut()[i].theta +=  chains[1].spinners_ptr()[i].freq * 2*M_PI / sigLen;
 		}
-		for(int i = 0; i < chains[0].chainLength; i++){
-			chains[0].spinners[i].theta +=  chains[0].spinners[i].freq * 2*M_PI / sigLen;
+		for(int i = 0; i < chains[0].chain_length(); i++){
+			chains[0].spinners_mut()[i].theta +=  chains[0].spinners_ptr()[i].freq * 2*M_PI / sigLen;
 		}
 		SDL_Delay(16);
 	}

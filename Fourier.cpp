@@ -22,11 +22,11 @@ bool createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
 			double phi = (2 * M_PI * k * n) / sigLength;
 			// TODO: Find nicer way of picking Point2D variable (array-like offsets? Magic with pointers?)
 			// horizontal spinners
-			reHori += (signal[n].x - chains[0].anchor.getX()) * cos(phi);
-			imHori -= (signal[n].x - chains[0].anchor.getX()) * sin(phi);
+			reHori += (signal[n].x - chains[0].anchor_ref().getX()) * cos(phi);
+			imHori -= (signal[n].x - chains[0].anchor_ref().getX()) * sin(phi);
 			// vertical spinners
-			reVert += (signal[n].y - chains[1].anchor.getY()) * cos(phi);
-			imVert -= (signal[n].y - chains[1].anchor.getY()) * sin(phi);
+			reVert += (signal[n].y - chains[1].anchor_ref().getY()) * cos(phi);
+			imVert -= (signal[n].y - chains[1].anchor_ref().getY()) * sin(phi);
 		}
 //      printf("DFT Params -> re: %d, im: %d\n", reHori, imHori);
 		reHori = reHori / sigLength;
@@ -41,12 +41,12 @@ bool createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
 		double freqV = k;
 
 		// reassign values
-		chains[0].spinners[k].freq = freqH;
-		chains[0].spinners[k].theta = phaseH;
-		chains[0].spinners[k].rho = ampH;
-		chains[1].spinners[k].freq = freqV;
-		chains[1].spinners[k].theta = phaseV + M_PI/2;
-		chains[1].spinners[k].rho = ampV;
+		chains[0].spinners_mut()[k].freq = freqH;
+		chains[0].spinners_mut()[k].theta = phaseH;
+		chains[0].spinners_mut()[k].rho = ampH;
+		chains[1].spinners_mut()[k].freq = freqV;
+		chains[1].spinners_mut()[k].theta = phaseV + M_PI/2;
+		chains[1].spinners_mut()[k].rho = ampV;
 
 //		printf("	Sav'd (%f, %f, %f)\n",
 //				chains[1].spinners[k].rho,
