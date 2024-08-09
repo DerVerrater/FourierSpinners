@@ -125,7 +125,8 @@ int main(int argc, char* argv[]){
 		double theta = (2*M_PI)*(double)i/sigLen;
 		double x = 100*(theta - M_PI);
 		double y = 100*sin(theta);
-		sig[i] = { x, y };
+		sig.push_back({ x, y });
+
 //		printf("input signal: (%f, %f)\n", x, y);
 	}
 	
