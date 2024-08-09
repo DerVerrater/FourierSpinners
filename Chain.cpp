@@ -8,14 +8,6 @@
 #include "Chain.h"
 #include <stdio.h>
 
-
-
-Chain::Chain(){
-	this->spinners = nullptr;
-	this->chainLength = 0;
-	this->anchor = Spinner {0, 0, 0};
-}
-
 Chain::Chain(int chainlength, Spinner anchor){
 	this->spinners = new Spinner[chainlength];
 	this->chainLength = chainlength;
@@ -49,10 +41,4 @@ Chain::Chain(Spinner* spinners, int chainlength, Spinner anchor) {
 //	this->spinners = s.spinners;
 //}
 
-
-Chain::~Chain() {
-	//TODO SOLVE DOUBLE-FREE ERROR
-	// VVV results in double-free memory corruption. WTF?
-	this->spinners = nullptr;
-}
 

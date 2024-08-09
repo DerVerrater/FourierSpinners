@@ -17,13 +17,9 @@ public:
 	int chainLength;
 	Spinner* spinners;
 	Spinner anchor;
-	Chain();
+	Chain() = default;
 	Chain(int chainLength, Spinner anchor = Spinner{0, 0, 0});
 	Chain(Spinner* spinners, int chainLength, Spinner anchor = Spinner{0, 0, 0});
-//	Chain(Chain const& copy);
-//	Chain& operator=(Chain rhs);
-//	void swap(Chain& s) noexcept;
-	virtual ~Chain();
 };
 
 #endif /* CHAIN_H_ */
