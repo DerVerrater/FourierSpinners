@@ -9,17 +9,17 @@
 #include <cmath>
 #include <stdio.h>
 
-bool createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
-	printf("Reading signal of len %d, creating samples %d\n", sigLength, numSamples);
+bool createDFT(Chain* chains, const std::vector<const Point2D>& signal, int numSamples){
+	printf("Reading signal of len %zu, creating samples %d\n", signal.size(), numSamples);
 
 	for(int k=0; k<numSamples; k++){
 		double reHori = 0; // the real portion of the Fourier transform
 		double imHori = 0; // the imaginary portion """
 		double reVert = 0;
 		double imVert = 0;
-		for (int n = 0; n < sigLength; n++) {
+		for (int n = 0; n < signal.size(); n++) {
 //			printf("chunk loop iter %d/%d\n", n, (length-1));
-			double phi = (2 * M_PI * k * n) / sigLength;
+			double phi = (2 * M_PI * k * n) / signal.size();
 			// TODO: Find nicer way of picking Point2D variable (array-like offsets? Magic with pointers?)
 			// horizontal spinners
 			reHori += (signal[n].x - chains[0].anchor_ref().getX()) * cos(phi);
@@ -29,10 +29,10 @@ bool createDFT(Chain* chains, Point2D* signal, int sigLength, int numSamples){
 			imVert -= (signal[n].y - chains[1].anchor_ref().getY()) * sin(phi);
 		}
 //      printf("DFT Params -> re: %d, im: %d\n", reHori, imHori);
-		reHori = reHori / sigLength;
-		imHori = imHori / sigLength;
-		reVert = reVert / sigLength;
-		imVert = imVert / sigLength;
+		reHori = reHori / signal.size();
+		imHori = imHori / signal.size();
+		reVert = reVert / signal.size();
+		imVert = imVert / signal.size();
 		double ampH = sqrtl(pow(reHori, 2) + pow(imHori, 2));
 		double phaseH = atan2l(imHori, reHori);
 		double freqH = k;
