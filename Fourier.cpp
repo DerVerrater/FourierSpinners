@@ -9,8 +9,12 @@
 #include <cmath>
 #include <stdio.h>
 
-bool createDFT(Chain* chains, const std::vector<const Point2D>& signal, int numSamples){
+std::pair<Chain, Chain> createDFT(const std::vector<const Point2D>& signal, int numSamples){
 	printf("Reading signal of len %zu, creating samples %d\n", signal.size(), numSamples);
+	std::pair<Chain, Chain> chains = {
+		Chain(numSamples),
+		Chain(numSamples)
+	};
 
 	for(int k=0; k<numSamples; k++){
 		double reHori = 0; // the real portion of the Fourier transform
@@ -22,11 +26,11 @@ bool createDFT(Chain* chains, const std::vector<const Point2D>& signal, int numS
 			double phi = (2 * M_PI * k * n) / signal.size();
 			// TODO: Find nicer way of picking Point2D variable (array-like offsets? Magic with pointers?)
 			// horizontal spinners
-			reHori += (signal[n].x - chains[0].anchor_ref().getX()) * cos(phi);
-			imHori -= (signal[n].x - chains[0].anchor_ref().getX()) * sin(phi);
+			reHori += (signal[n].x - chains.first.anchor_ref().getX()) * cos(phi);
+			imHori -= (signal[n].x - chains.first.anchor_ref().getX()) * sin(phi);
 			// vertical spinners
-			reVert += (signal[n].y - chains[1].anchor_ref().getY()) * cos(phi);
-			imVert -= (signal[n].y - chains[1].anchor_ref().getY()) * sin(phi);
+			reVert += (signal[n].y - chains.second.anchor_ref().getY()) * cos(phi);
+			imVert -= (signal[n].y - chains.second.anchor_ref().getY()) * sin(phi);
 		}
 //      printf("DFT Params -> re: %d, im: %d\n", reHori, imHori);
 		reHori = reHori / signal.size();
@@ -41,12 +45,12 @@ bool createDFT(Chain* chains, const std::vector<const Point2D>& signal, int numS
 		double freqV = k;
 
 		// reassign values
-		chains[0].spinners_mut()[k].freq = freqH;
-		chains[0].spinners_mut()[k].theta = phaseH;
-		chains[0].spinners_mut()[k].rho = ampH;
-		chains[1].spinners_mut()[k].freq = freqV;
-		chains[1].spinners_mut()[k].theta = phaseV + M_PI/2;
-		chains[1].spinners_mut()[k].rho = ampV;
+		chains.first.spinners_mut()[k].freq = freqH;
+		chains.first.spinners_mut()[k].theta = phaseH;
+		chains.first.spinners_mut()[k].rho = ampH;
+		chains.second.spinners_mut()[k].freq = freqV;
+		chains.second.spinners_mut()[k].theta = phaseV + M_PI/2;
+		chains.second.spinners_mut()[k].rho = ampV;
 
 //		printf("	Sav'd (%f, %f, %f)\n",
 //				chains[1].spinners[k].rho,
@@ -55,5 +59,5 @@ bool createDFT(Chain* chains, const std::vector<const Point2D>& signal, int numS
 //		printf("	addr: %d\n", &chains[1].spinners[k]);
 	}
 //	printf("Transform complete. Returning...\n");
-	return true;
+	return chains;
 }
