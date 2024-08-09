@@ -9,16 +9,6 @@
 #include <cmath>
 #include <stdio.h>
 
-Spinner::Spinner(double rho, double theta, double freq) {
-	this->rho = rho;
-	this->theta = theta;
-	this->freq = freq;
-}
-
-Spinner::~Spinner(){
-	//do nothing
-}
-
 Spinner Spinner::fromCartesian(double x, double y){
 	double rho = sqrt(pow(x, 2) + pow(y, 2));
 	double theta = atan2(y, x);
