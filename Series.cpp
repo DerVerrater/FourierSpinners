@@ -118,15 +118,9 @@ int main(int argc, char* argv[]){
 	CircularBuffer traceBuffer = CircularBuffer(1000); // points drawn by the epicycles
 	CircularBuffer drawing = CircularBuffer(1000); // points drawn by the user
 
-	#define DFT_DEPTH 1000 // the number of epicycles the discrete Fourier transform will produce
-	printf("creating chains\n");
-	Chain chains[2] = {
-			Chain(DFT_DEPTH, Spinner {0, 0, 0}),
-			Chain(DFT_DEPTH, Spinner {0, 0, 0})
-	};
 	// CREATE INPUT SIGNALS
 	int sigLen = 1000;
-	Point2D sig[sigLen] = {};
+	std::vector<Point2D> sig = {};
 	for(int i = 0; i < sigLen; i++){
 		double theta = (2*M_PI)*(double)i/sigLen;
 		double x = 100*(theta - M_PI);
@@ -134,8 +128,10 @@ int main(int argc, char* argv[]){
 		sig[i] = { x, y };
 //		printf("input signal: (%f, %f)\n", x, y);
 	}
-	printf("Performing transform...\n");
-	createDFT(chains, sig, sigLen, DFT_DEPTH);
+	
+	#define DFT_DEPTH 1000 // the number of epicycles the discrete Fourier transform will produce
+	printf("creating chains and performing transform...\n");
+	std::pair<Chain, Chain> chains = createDFT(sig, DFT_DEPTH);
 
 	// this spinner acts as a position vector for anchoring
 	//all the actual spinners to a point that isn't (0,0)
