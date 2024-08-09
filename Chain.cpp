@@ -9,21 +9,20 @@
 #include <stdio.h>
 
 Chain::Chain(int chainlength, Spinner anchor){
-	this->spinners = new Spinner[chainlength];
-	this->chainLength = chainlength;
+	this->spinner_vec.reserve(chainlength);
 	this->anchor = anchor;
 }
 
 int Chain::chain_length() const {
-	return this->chainLength;
+	return this->spinner_vec.size();
 }
 
-Spinner* const Chain::spinners_mut() const {
-	return this->spinners;
+std::vector<Spinner>& Chain::spinners_mut() {
+	return this->spinner_vec;
 }
 
 const Spinner* const Chain::spinners_ptr() const {
-	return this->spinners;
+	return this->spinner_vec.data();
 }
 
 Spinner& Chain::anchor_mut() {

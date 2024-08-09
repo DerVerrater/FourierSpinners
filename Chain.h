@@ -9,17 +9,15 @@
 #define CHAIN_H_
 
 #include "Spinner.h"
-#include <stdio.h>
-
+#include <vector>
 
 class Chain {
-	int chainLength;
-	Spinner* spinners;
+	std::vector<Spinner> spinner_vec;
 	Spinner anchor;
 public:
 	Chain(int chainLength, Spinner anchor = Spinner{0, 0, 0});
 	int chain_length() const;
-	Spinner * const spinners_mut() const;
+	std::vector<Spinner>& spinners_mut();
 	const Spinner * const spinners_ptr() const;
 	Spinner& anchor_mut();
 	const Spinner& anchor_ref() const;
