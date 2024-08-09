@@ -9,7 +9,7 @@
 #include <cmath>
 #include <stdio.h>
 
-std::pair<Chain, Chain> createDFT(const std::vector<const Point2D>& signal, int numSamples){
+std::pair<Chain, Chain> createDFT(const std::vector<Point2D>& signal, int numSamples){
 	printf("Reading signal of len %zu, creating samples %d\n", signal.size(), numSamples);
 	std::pair<Chain, Chain> chains = {
 		Chain(numSamples),

@@ -15,6 +15,6 @@
 // Signal is a vector of points.
 // number of samples to take (epicycles to create) from signal.
 // returns a std::pair of chains
-std::pair<Chain, Chain> createDFT(const std::vector<const Point2D>& signal, int samples);
+std::pair<Chain, Chain> createDFT(const std::vector<Point2D>& signal, int samples);
 
 #endif /* FOURIER_H_ */
