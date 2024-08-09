@@ -24,7 +24,7 @@ Chain::Chain(int chainlength, Spinner anchor){
 
 Chain::Chain(Spinner* spinners, int chainlength, Spinner anchor) {
 	this->spinners = spinners;
-	this->chainLength = chainLength;
+	this->chainLength = chainlength;
 	this->anchor = anchor;
 }
 
