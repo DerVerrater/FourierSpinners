@@ -12,7 +12,7 @@
 Spinner Spinner::fromCartesian(double x, double y){
 	double rho = sqrt(pow(x, 2) + pow(y, 2));
 	double theta = atan2(y, x);
-	return Spinner(rho, theta);
+	return Spinner{rho, theta, 1};
 }
 
 Spinner Spinner::operator +(const Spinner& inp){

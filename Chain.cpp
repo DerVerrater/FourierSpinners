@@ -13,7 +13,7 @@
 Chain::Chain(){
 	this->spinners = nullptr;
 	this->chainLength = 0;
-	this->anchor = Spinner(0, 0, 0);
+	this->anchor = Spinner {0, 0, 0};
 }
 
 Chain::Chain(int chainlength, Spinner anchor){

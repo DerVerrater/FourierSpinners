@@ -121,8 +121,8 @@ int main(int argc, char* argv[]){
 	#define DFT_DEPTH 1000 // the number of epicycles the discrete Fourier transform will produce
 	printf("creating chains\n");
 	Chain chains[2] = {
-			Chain(DFT_DEPTH, Spinner(0, 0, 0)),
-			Chain(DFT_DEPTH, Spinner(0, 0, 0))
+			Chain(DFT_DEPTH, Spinner {0, 0, 0}),
+			Chain(DFT_DEPTH, Spinner {0, 0, 0})
 	};
 	// CREATE INPUT SIGNALS
 	int sigLen = 1000;
@@ -196,7 +196,7 @@ int main(int argc, char* argv[]){
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 		SDL_RenderClear(renderer);
 
-		Spinner offset = Spinner(0, 0); // start offset at origin (uses Spinner because the operators are overloaded for convenience)
+		Spinner offset = Spinner {0, 0}; // start offset at origin (uses Spinner because the operators are overloaded for convenience)
 		Point2D tracePoint; // the convergence of each set of spinners. This is where the next dot will be drawn
 		Point2D antiTracePoint; // the vertical & horizontal position for the start of each intersection arms -- like the tracePoint, but holds the opposite variable: instead keeps y-val from horizChain, and x-val from vertiChain
 		offset = chains[1].anchor; // move draw point to that of the anchor

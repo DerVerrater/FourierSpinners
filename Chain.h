@@ -18,8 +18,8 @@ public:
 	Spinner* spinners;
 	Spinner anchor;
 	Chain();
-	Chain(int chainLength, Spinner anchor = Spinner(0,0));
-	Chain(Spinner* spinners, int chainLength, Spinner anchor = Spinner(0, 0));
+	Chain(int chainLength, Spinner anchor = Spinner{0, 0, 0});
+	Chain(Spinner* spinners, int chainLength, Spinner anchor = Spinner{0, 0, 0});
 //	Chain(Chain const& copy);
 //	Chain& operator=(Chain rhs);
 //	void swap(Chain& s) noexcept;
