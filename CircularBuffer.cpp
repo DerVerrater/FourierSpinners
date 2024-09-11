@@ -20,7 +20,7 @@ CircularBuffer::CircularBuffer(int size) {
 
 Point2D CircularBuffer::pop(){
 	--idx; // current pos is *next* available, so decrement first.
-	if(idx <= 0){
+	if(idx == -1){
 		idx = capacity-1;
 //		printf("Circular buffer rollunder!\n");
 	}
@@ -35,7 +35,7 @@ const Point2D& CircularBuffer::peek(){
 void CircularBuffer::push(Point2D inp){
 	point_buffer[idx++] = inp; // current pos is in bounds
 		// and advance to next available
-	if(idx > capacity){ // if new pos is out of bounds, then fix
+	if(idx >= capacity){ // if new pos is out of bounds, then fix
 		idx = 0;
 		printf("Circular buffer rollover!\n");
 	} // roll over to min
