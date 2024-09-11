@@ -6,12 +6,16 @@
  */
 
 #include "CircularBuffer.h"
+#include "Helpers.h"
 #include <stdio.h>
 
 CircularBuffer::CircularBuffer(int size) {
 	this->capacity = size;
 	this->idx = 0; // the next available space to write into
 	this->point_buffer.reserve(size);
+	for(size_t idx = 0; idx < size; idx++){
+		this->point_buffer.push_back(Point2D{});
+	}
 }
 
 Point2D CircularBuffer::pop(){

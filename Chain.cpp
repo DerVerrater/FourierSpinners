@@ -6,10 +6,14 @@
  */
 
 #include "Chain.h"
+#include "Spinner.h"
 #include <stdio.h>
 
 Chain::Chain(int chainlength, Spinner anchor){
 	this->spinner_vec.reserve(chainlength);
+	for(size_t idx = 0; idx < chainlength; idx++) {
+		this->spinner_vec.push_back(Spinner{});
+	}
 	this->anchor = anchor;
 }
 
