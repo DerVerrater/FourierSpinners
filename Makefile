@@ -1,8 +1,9 @@
 EXE = Series
 SRC_DIR = .
+BUILD_DIR = ./build
 
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(SRCS:.cpp=.o)
+OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 OPTIMIZATION_LEVEL = "-O2"
 
 CXXFLAGS += $(shell sdl2-config --cflags) $(OPTIMIZATION_LEVEL) -std=c++17
@@ -15,7 +16,8 @@ all: $(EXE)
 
 # The only build artefact at this time is the finished executable.
 clean:
-	rm -f $(EXE) *.o
+	rm -f $(EXE)
+	rm -rf $(BUILD_DIR)
 
 # Install the program into `/usr/bin/` according to the FHS
 # `DESTDIR` is normally empty and will have no effect. It's for future Debian
@@ -26,3 +28,9 @@ install: $(EXE)
 # the executable depends on the sources existing
 $(EXE): $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
+
+$(BUILD_DIR):
+	mkdir $@
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
