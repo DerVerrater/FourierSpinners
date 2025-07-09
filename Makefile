@@ -15,7 +15,7 @@ all: $(EXE)
 
 # The only build artefact at this time is the finished executable.
 clean:
-	rm -f $(EXE)
+	rm -f $(EXE) *.o
 
 # Install the program into `/usr/bin/` according to the FHS
 # `DESTDIR` is normally empty and will have no effect. It's for future Debian
@@ -24,6 +24,5 @@ install: $(EXE)
 	install -m 755 -C ./Series -D $(DESTDIR)/usr/bin/Series
 
 # the executable depends on the sources existing
-$(EXE): $(SRCS)
-	$(CXX) $(SRCS) $(CXXFLAGS) $(LDFLAGS) -o $@
-
+$(EXE): $(OBJS)
+	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
