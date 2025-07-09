@@ -18,7 +18,7 @@ clean:
 # `DESTDIR` is normally empty and will have no effect. It's for future Debian
 # packaging (dpkg-buildpackage installs to a fake root, and uses that to do it)
 install: $(EXE)
-	install -o root -g root -m 755 -C ./Series -D $(DESTDIR)/usr/bin/Series
+	install -m 755 -C ./Series -D $(DESTDIR)/usr/bin/Series
 
 # the executable depends on the sources existing
 $(EXE): $(SRCS)
