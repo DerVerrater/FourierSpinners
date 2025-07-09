@@ -1,5 +1,5 @@
 EXE = Series
-SRCS = Spinner.cpp Series.cpp CircularBuffer.cpp Fourier.cpp Chain.cpp drawing_utils.cpp
+SRCS = Spinner.cpp main.cpp CircularBuffer.cpp Fourier.cpp Chain.cpp drawing_utils.cpp
 OPTIMIZATION_LEVEL = "-O2"
 
 CXXFLAGS += $(shell sdl2-config --cflags) $(OPTIMIZATION_LEVEL) -std=c++17
