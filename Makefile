@@ -26,11 +26,11 @@ install: $(EXE)
 	install -m 755 -C ./Series -D $(DESTDIR)/usr/bin/Series
 
 # the executable depends on the sources existing
-$(EXE): $(OBJS)
-	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
+$(EXE): $(BUILD_DIR) $(OBJS)
+	$(CXX) $(OBJS) $(CXXFLAGS) $(LDFLAGS) -o $@
 
 $(BUILD_DIR):
 	mkdir $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
