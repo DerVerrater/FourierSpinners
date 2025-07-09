@@ -1,0 +1,25 @@
+Source: fourier-spinners
+Maintainer: Robert Garrett <robertgarrett404@gmail.com>
+Section: misc
+Priority: optional
+Standards-Version: 4.6.2
+Build-Depends:
+ debhelper-compat (= 13),
+ libsdl2-dev,
+Homepage: https://github.com/DerVerrater/FourierSpinners
+Vcs-Git: https://github.com/DerVerrater/FourierSpinners.git
+Vcs-Browser: https://github.com/DerVerrater/FourierSpinners
+Rules-Requires-Root: no
+
+Package: fourier-spinners
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+ libsdl2-2.0-0,
+Description: Drawing toy using epicycles to trace paths
+ This is a toy program based on a video from the CodingTrain. The user can draw
+ on the screen and the program will compute an approximation of that path using
+ the discrete Fourier transform. The frequencies, represented here as circles
+ of a given radius and angular velocity, are then added back together to trace
+ out a new approximation of the original path.
