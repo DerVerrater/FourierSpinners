@@ -12,7 +12,7 @@ all: $(EXE)
 
 # The only build artefact at this time is the finished executable.
 clean:
-	rm $(EXE)
+	rm -f $(EXE)
 
 # Install the program into `/usr/bin/` according to the FHS
 # `DESTDIR` is normally empty and will have no effect. It's for future Debian
