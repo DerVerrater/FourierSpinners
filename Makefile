@@ -4,8 +4,11 @@ BUILD_DIR = ./build
 
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
+DEPS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.d, $(SRCS))
+
 OPTIMIZATION_LEVEL = "-O2"
 
+CXXFLAGS += -MMD -MP
 CXXFLAGS += $(shell sdl2-config --cflags) $(OPTIMIZATION_LEVEL) -std=c++17
 LDFLAGS += $(shell sdl2-config --libs)
 
@@ -34,3 +37,5 @@ $(BUILD_DIR):
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+-include $(DEPS)
