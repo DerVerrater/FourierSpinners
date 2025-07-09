@@ -6,7 +6,7 @@
 #include "Spinner.h"
 #include "CircularBuffer.h"
 #include "drawing_utils.h"
-#include "Helpers.h"
+#include "point2d.h"
 #include "Fourier.h"
 
 const int winWidth = 800;

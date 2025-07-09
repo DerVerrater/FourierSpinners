@@ -9,7 +9,7 @@
 #define FOURIER_H_
 
 #include "Chain.h"
-#include "Helpers.h"
+#include "point2d.h"
 #include "Spinner.h"
 
 // Signal is a vector of points.

@@ -6,7 +6,7 @@
  */
 
 #include "CircularBuffer.h"
-#include "Helpers.h"
+#include "point2d.h"
 #include <stdio.h>
 
 CircularBuffer::CircularBuffer(int size) {
