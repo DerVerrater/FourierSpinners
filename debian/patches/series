@@ -1,0 +1,3 @@
+0001-Specify-what-we-re-installing-in-install-tgt.patch
+0002-Don-t-specify-user-group-ownership-in-install.patch
+0003-Always-delete-binary-on-clean-even-if-not-present.patch

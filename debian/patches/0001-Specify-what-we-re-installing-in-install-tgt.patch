@@ -1,0 +1,26 @@
+From: Robert Garrett <robertgarrett404@gmail.com>
+Date: Wed, 9 Jul 2025 10:37:52 -0500
+Subject: Specify *what* we're installing in install tgt
+
+I've never thought it was a good idea to use a project's Makefile to
+install the software, so I never bothered to test this. Packaging
+systems, however, use it to automatically get a correct install path
+instead of requiring a re-implementation by the maintainer... and mine
+doesn't work. Oops.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e7d2f81..6152ebd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -18,7 +18,7 @@ clean:
+ # `DESTDIR` is normally empty and will have no effect. It's for future Debian
+ # packaging (dpkg-buildpackage installs to a fake root, and uses that to do it)
+ install: $(EXE)
+-	install -o root -g root -m 755 -C -D $(DESTDIR)/usr/bin/Series
++	install -o root -g root -m 755 -C ./Series -D $(DESTDIR)/usr/bin/Series
+ 
+ # the executable depends on the sources existing
+ $(EXE): $(SRCS)
