@@ -1,3 +1,24 @@
+fourier-spinners (2.0.0-1) unstable; urgency=medium
+
+  * Specify *what* we're installing in install tgt
+  * Don't specify user & group ownership in install
+  * Always delete binary on clean, even if not present
+  * Fix line endings in Makefile (CRLF -> LF)
+  * Move circle drawing fn to a utility module
+  * Rename the main file to "main.cpp"
+  * Rename Helpers.h -> point2d.h
+  * Split Point2D impl into its own file.
+  * Delete the unit test runner
+  * Name a src-dir and autodiscover files from there
+  * Build object files before linking
+  * Relocate build objects to a "./build" subdir
+  * Move the build-dir dependency to EXE target
+  * Generate & include header file automake rules
+  * Drop all patches, they're no longer required.
+  * Update changelog for 2.0.0-1 release
+
+ -- Robert Garrett <robertgarrett404@gmail.com>  Wed, 16 Jul 2025 20:47:28 +0000
+
 fourier-spinners (1.0.0-1) unstable; urgency=medium
 
   * Fixed Fourier.cpp to actually compile and spit out two chain objects
