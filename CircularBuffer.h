@@ -9,7 +9,7 @@
 #define CIRCULARBUFFER_H_
 
 #include "Spinner.h"
-#include "Helpers.h"
+#include "point2d.h"
 #include <vector>
 
 //TODO: Use template to make this a generic ring-buffer.
