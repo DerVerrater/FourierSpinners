@@ -1,5 +1,65 @@
-fourier-spinners (1.0.0-1) UNRELEASED; urgency=medium
+fourier-spinners (1.0.0-1) unstable; urgency=medium
 
-  Placeholder changelog. I'm still getting the packaging ready.
+  * Fixed Fourier.cpp to actually compile and spit out two chain objects
+  * abandoning idea of creatin objects from Fourier.cpp's DFT function. Making
+    commit for future reference
+  * It runs again, but it sure as hell doesn't work. DFT isn't transforming.
+    Comparing against older V2 build shows no difference in actual algorithm --
+    just the new vars for vertical & horizonal values all in one go
+  * Transform appears to be working. Horizontal signal components had their
+    sin/cos multipliers swapped causing the horizontal spinner to functionally
+    flip across its diagonal axis. Current default signal draws an
+    approximation of a single period of a sine wave.
+  * Drawing fully working and no longer flipped. I'm gonna lose my shit now,
+    thanks. TIME FOR POLISH!
+  * Line fading! Only it cycles every 255 points, rather than normalized across
+    the entire path length.
+  * Created .gitignore file to filter out Windows SDL_src. ALSO ADDED WINDOWS
+    SUPPORT AWW YE
+  * Un-fucked the drawing direction & scale. Direction was error in sqrt()
+    parameter functions. Scale is attenuation because of undersampling (so up
+    the DFT_DEPTH value)
+  * Readme file, and a month-long pause made me forget what I was doing D:
+  * Fixed double-free on Chain -- may still leak memory from Spinners. Its
+    unclear how the pointer is deallocated
+  * Refactored the Makefile, bashed the Windows Makefile, and the code is
+    still a mess.
 
- -- Robert <robertgarrett404@gmail.com>  Wed, 16 Jul 2025 14:48:08 +0000
+  [ Robert Garrett ]
+  * Delete stale files
+  * Rename README, switching to Markdown
+  * New README.md contents
+  * Updates to Makefile
+  * Remove the compiled program from the repo
+  * Make `createDFT` into a free-function
+  * Begin fixup of CircularBuffer
+  * Make CircularBuffer bits more private
+  * Back CircularBuffer with std::vector, drop a const
+  * Fix: off-by-one error in CircularBuffer::pop()
+  * CircularBuffer::data() and ::data_mut() methods
+  * Specify C++ 17
+  * Let Spinner class have auto-generated constructor
+  * Update Spinner construction call sites
+  * Const qualifiers for data accessors! Yay `const`
+  * Fix: self-assign, instead of argument intake
+  * Use auto and default generated con-/de-structors
+  * Drop old comments about copy nonsense
+  * Make Chain's data members private, add accessors
+  * Update Chain data access at call sites
+  * Drop unused constructors
+  * Switch to std::vector for Spinner container
+  * Receive signal by const vector ref, not pointer
+  * Internalize chain creation completely
+  * Begin change to new `createDFT` interface
+  * Relax `const`ness in `createDFT`
+  * Update second `createDFT` callsite
+  * Swap array subscripting for `.first` and `.second`
+  * Implement `CircularBuffer::data_vec()`
+  * Vector needs `push_back` not array subscripting
+  * Fill Chain and CircularBuffer vectors on startup
+  * Fix off-by-one error in circular buffer rollover
+  * Begin Debian package creation
+  * Rediff patches
+  * Snapshot build before final release
+
+ -- Robert <robertgarrett404@gmail.com>  Wed, 16 Jul 2025 18:33:52 +0000
